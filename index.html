@@ -1,0 +1,1084 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ExPort.ID - Platform Ekspor UMKM Indonesia</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#2563EB',
+                        secondary: '#059669',
+                        accent: '#F59E0B',
+                        dark: '#1E293B',
+                        light: '#F8FAFC'
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+        body {
+            font-family: 'Poppins', sans-serif;
+            scroll-behavior: smooth;
+        }
+        .hero-gradient {
+            background: linear-gradient(135deg, #2563EB 0%, #059669 100%);
+        }
+        .feature-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+        }
+        .timeline {
+            position: relative;
+        }
+        .timeline::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            left: 50%;
+            width: 4px;
+            background: #2563EB;
+            margin-left: -2px;
+        }
+        .timeline-item {
+            position: relative;
+            margin-bottom: 50px;
+        }
+        .timeline-item:nth-child(odd) .timeline-content {
+            margin-left: auto;
+            text-align: right;
+        }
+        .timeline-item:nth-child(even) .timeline-content {
+            margin-right: auto;
+            text-align: left;
+        }
+        .timeline-content::before {
+            content: '';
+            position: absolute;
+            top: 24px;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background: #2563EB;
+        }
+        .timeline-item:nth-child(odd) .timeline-content::before {
+            right: -60px;
+        }
+        .timeline-item:nth-child(even) .timeline-content::before {
+            left: -60px;
+        }
+        .team-card:hover img {
+            transform: scale(1.05);
+        }
+        .chat-bubble {
+            position: relative;
+            border-radius: 20px;
+        }
+        .ai-message::after {
+            border-right-color: #E5E7EB;
+            left: -20px;
+            top: 15px;
+        }
+        .user-message::after {
+            border-left-color: #2563EB;
+            right: -20px;
+            top: 15px;
+        }
+        .mockup-container {
+            perspective: 1000px;
+        }
+        .mockup {
+            transform: rotateY(-10deg);
+            box-shadow: 20px 20px 60px rgba(0, 0, 0, 0.1);
+            transition: all 0.5s ease;
+        }
+        .mockup:hover {
+            transform: rotateY(0deg);
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+        }
+        .floating-label {
+            transform: translateY(0.5rem);
+            transition: all 0.2s ease-out;
+        }
+        input:focus + .floating-label,
+        input:not(:placeholder-shown) + .floating-label {
+            transform: translateY(-1.25rem) scale(0.75);
+            color: #2563EB;
+        }
+        .fade-in {
+            animation: fadeIn 0.5s ease-in;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .loading-spinner {
+            animation: spin 1s linear infinite;
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        .transaction-success {
+            animation: successPulse 2s ease-in-out;
+        }
+        @keyframes successPulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+        .language-selector {
+            transition: all 0.3s ease;
+        }
+        .product-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+        }
+        .cart-item {
+            transition: all 0.3s ease;
+        }
+        .cart-item:hover {
+            background-color: #f9fafb;
+        }
+    </style>
+</head>
+<body class="bg-light text-dark">
+    <!-- Header/Navigation -->
+    <header class="bg-white shadow-md fixed w-full z-50">
+        <div class="container mx-auto px-4">
+            <div class="flex justify-between items-center py-4">
+                <div class="flex items-center">
+                    <div class="bg-primary w-10 h-10 rounded-lg flex items-center justify-center">
+                        <i class="fas fa-globe-asia text-white text-xl"></i>
+                    </div>
+                    <a href="#" class="ml-3 text-xl font-bold text-primary">ExPort<span class="text-accent">.ID</span></a>
+                </div>
+                <nav class="hidden md:flex space-x-8">
+                    <a href="#home" class="text-primary font-medium hover:text-accent">Beranda</a>
+                    <a href="#products" class="font-medium hover:text-primary">Produk</a>
+                    <a href="#categories" class="font-medium hover:text-primary">Kategori</a>
+                    <a href="#sellers" class="font-medium hover:text-primary">UMKM</a>
+                    <a href="#how-it-works" class="font-medium hover:text-primary">Cara Kerja</a>
+                </nav>
+                <div class="flex items-center space-x-4">
+                    <div class="relative group">
+                        <button class="flex items-center space-x-1 bg-gray-100 px-3 py-1 rounded-lg">
+                            <i class="fas fa-globe"></i>
+                            <span>EN</span>
+                            <i class="fas fa-chevron-down text-xs"></i>
+                        </button>
+                        <div class="absolute right-0 mt-2 w-40 bg-white shadow-lg rounded-lg py-2 hidden group-hover:block">
+                            <button class="language-selector w-full text-left px-4 py-2 hover:bg-gray-100 flex items-center">
+                                <span class="mr-2">🇮🇩</span> Indonesia
+                            </button>
+                            <button class="language-selector w-full text-left px-4 py-2 hover:bg-gray-100 flex items-center">
+                                <span class="mr-2">🇺🇸</span> English
+                            </button>
+                            <button class="language-selector w-full text-left px-4 py-2 hover:bg-gray-100 flex items-center">
+                                <span class="mr-2">🇯🇵</span> 日本語
+                            </button>
+                            <button class="language-selector w-full text-left px-4 py-2 hover:bg-gray-100 flex items-center">
+                                <span class="mr-2">🇨🇳</span> 中文
+                            </button>
+                        </div>
+                    </div>
+                    <button id="user-menu" class="flex items-center space-x-1">
+                        <i class="fas fa-user-circle text-2xl text-gray-600"></i>
+                        <span class="hidden md:inline">Akun</span>
+                    </button>
+                    <button id="cart-btn" class="relative">
+                        <i class="fas fa-shopping-cart text-xl text-gray-700"></i>
+                        <span class="absolute -top-2 -right-2 bg-primary text-white text-xs h-5 w-5 rounded-full flex items-center justify-center">3</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section id="home" class="hero-gradient pt-32 pb-20">
+        <div class="container mx-auto px-4">
+            <div class="flex flex-col md:flex-row items-center">
+                <div class="md:w-1/2 mb-10 md:mb-0">
+                    <h1 class="text-4xl md:text-5xl font-bold text-white mb-4">Temukan Kekayaan Kerajinan Indonesia untuk Pasar Global</h1>
+                    <p class="text-xl text-white mb-8">Platform ekspor pertama di Indonesia yang menghubungkan pembeli internasional langsung dengan UMKM lokal.</p>
+                    <div class="relative max-w-lg">
+                        <input type="text" placeholder="Cari produk, UMKM, atau kategori..." class="w-full py-4 px-6 rounded-full shadow-lg">
+                        <button class="absolute right-2 top-2 bg-primary text-white py-2 px-6 rounded-full hover:bg-blue-700">
+                            <i class="fas fa-search"></i> Cari
+                        </button>
+                    </div>
+                    <div class="flex mt-6 space-x-3">
+                        <span class="bg-white bg-opacity-20 text-white py-1 px-3 rounded-full text-sm">Batik</span>
+                        <span class="bg-white bg-opacity-20 text-white py-1 px-3 rounded-full text-sm">Keramik</span>
+                        <span class="bg-white bg-opacity-20 text-white py-1 px-3 rounded-full text-sm">Kerajinan Rotan</span>
+                        <span class="bg-white bg-opacity-20 text-white py-1 px-3 rounded-full text-sm">Kopi</span>
+                    </div>
+                </div>
+                <div class="md:w-1/2 flex justify-center">
+                    <div class="grid grid-cols-2 gap-4">
+                        <div class="bg-white rounded-xl shadow-lg p-4">
+                            <div class="bg-gray-200 border-2 border-dashed rounded-xl w-full h-40 mb-3"></div>
+                            <h3 class="font-bold">Kerajinan Rotan Anyaman</h3>
+                            <p class="text-primary font-bold">Rp 350.000</p>
+                            <p class="text-sm text-gray-500">UMKM Anyaman Jaya</p>
+                        </div>
+                        <div class="bg-white rounded-xl shadow-lg p-4 mt-8">
+                            <div class="bg-gray-200 border-2 border-dashed rounded-xl w-full h-40 mb-3"></div>
+                            <h3 class="font-bold">Batik Tulis Cap</h3>
+                            <p class="text-primary font-bold">Rp 850.000</p>
+                            <p class="text-sm text-gray-500">UMKM Batik Nusantara</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Categories Section -->
+    <section id="categories" class="py-16 bg-white">
+        <div class="container mx-auto px-4">
+            <div class="text-center mb-10">
+                <h2 class="text-3xl md:text-4xl font-bold mb-4">Jelajahi Kategori Produk</h2>
+                <div class="w-24 h-1 bg-primary mx-auto mb-6"></div>
+                <p class="text-lg max-w-3xl mx-auto">Temukan berbagai produk unggulan dari UMKM Indonesia</p>
+            </div>
+
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-6">
+                <div class="bg-gradient-to-br from-blue-50 to-blue-100 rounded-xl shadow p-6 text-center hover:shadow-lg transition">
+                    <div class="bg-blue-100 p-4 rounded-full inline-block mb-4">
+                        <i class="fas fa-tshirt text-blue-600 text-2xl"></i>
+                    </div>
+                    <h3 class="font-bold text-lg mb-2">Tekstil & Batik</h3>
+                    <p class="text-sm text-gray-600">125 produk</p>
+                </div>
+                <div class="bg-gradient-to-br from-green-50 to-green-100 rounded-xl shadow p-6 text-center hover:shadow-lg transition">
+                    <div class="bg-green-100 p-4 rounded-full inline-block mb-4">
+                        <i class="fas fa-mug-hot text-green-600 text-2xl"></i>
+                    </div>
+                    <h3 class="font-bold text-lg mb-2">Makanan & Minuman</h3>
+                    <p class="text-sm text-gray-600">98 produk</p>
+                </div>
+                <div class="bg-gradient-to-br from-yellow-50 to-yellow-100 rounded-xl shadow p-6 text-center hover:shadow-lg transition">
+                    <div class="bg-yellow-100 p-4 rounded-full inline-block mb-4">
+                        <i class="fas fa-gem text-yellow-600 text-2xl"></i>
+                    </div>
+                    <h3 class="font-bold text-lg mb-2">Kerajinan Tangan</h3>
+                    <p class="text-sm text-gray-600">203 produk</p>
+                </div>
+                <div class="bg-gradient-to-br from-purple-50 to-purple-100 rounded-xl shadow p-6 text-center hover:shadow-lg transition">
+                    <div class="bg-purple-100 p-4 rounded-full inline-block mb-4">
+                        <i class="fas fa-spa text-purple-600 text-2xl"></i>
+                    </div>
+                    <h3 class="font-bold text-lg mb-2">Kecantikan & Kesehatan</h3>
+                    <p class="text-sm text-gray-600">76 produk</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Featured Products Section -->
+    <section id="products" class="py-16 bg-gray-50">
+        <div class="container mx-auto px-4">
+            <div class="flex justify-between items-center mb-10">
+                <div>
+                    <h2 class="text-3xl md:text-4xl font-bold mb-2">Produk Unggulan</h2>
+                    <div class="w-24 h-1 bg-primary mb-6"></div>
+                </div>
+                <div class="flex space-x-3">
+                    <button class="border border-gray-300 px-4 py-2 rounded-lg hover:bg-gray-100">Semua</button>
+                    <button class="bg-primary text-white px-4 py-2 rounded-lg hover:bg-blue-700">Terbaru</button>
+                    <button class="border border-gray-300 px-4 py-2 rounded-lg hover:bg-gray-100">Terlaris</button>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+                <!-- Product 1 -->
+                <div class="product-card bg-white rounded-xl shadow-lg overflow-hidden transition duration-300">
+                    <div class="relative">
+                        <div class="bg-gray-200 border-2 border-dashed w-full h-48"></div>
+                        <div class="absolute top-3 right-3 bg-red-500 text-white text-xs px-2 py-1 rounded">Diskon 15%</div>
+                    </div>
+                    <div class="p-4">
+                        <div class="flex justify-between items-start">
+                            <div>
+                                <h3 class="font-bold">Kerajinan Rotan Anyaman</h3>
+                                <p class="text-sm text-gray-500">UMKM Anyaman Jaya</p>
+                            </div>
+                            <button class="text-gray-400 hover:text-primary">
+                                <i class="far fa-heart"></i>
+                            </button>
+                        </div>
+                        <div class="flex items-center mt-2">
+                            <div class="flex text-yellow-400">
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star-half-alt"></i>
+                            </div>
+                            <span class="text-xs text-gray-500 ml-2">(42 ulasan)</span>
+                        </div>
+                        <div class="flex items-end mt-3">
+                            <span class="text-primary font-bold text-lg">Rp 350.000</span>
+                            <span class="text-gray-500 text-sm line-through ml-2">Rp 410.000</span>
+                        </div>
+                        <div class="mt-4 flex space-x-2">
+                            <button class="flex-1 bg-primary text-white py-2 rounded-lg hover:bg-blue-700">
+                                <i class="fas fa-shopping-cart mr-1"></i> Beli
+                            </button>
+                            <button class="w-10 h-10 flex items-center justify-center border border-gray-300 rounded-lg hover:bg-gray-100">
+                                <i class="fas fa-eye"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Product 2 -->
+                <div class="product-card bg-white rounded-xl shadow-lg overflow-hidden transition duration-300">
+                    <div class="bg-gray-200 border-2 border-dashed w-full h-48"></div>
+                    <div class="p-4">
+                        <div class="flex justify-between items-start">
+                            <div>
+                                <h3 class="font-bold">Batik Tulis Cap Premium</h3>
+                                <p class="text-sm text-gray-500">UMKM Batik Nusantara</p>
+                            </div>
+                            <button class="text-gray-400 hover:text-primary">
+                                <i class="far fa-heart"></i>
+                            </button>
+                        </div>
+                        <div class="flex items-center mt-2">
+                            <div class="flex text-yellow-400">
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="far fa-star"></i>
+                            </div>
+                            <span class="text-xs text-gray-500 ml-2">(28 ulasan)</span>
+                        </div>
+                        <div class="mt-3">
+                            <span class="text-primary font-bold text-lg">Rp 850.000</span>
+                        </div>
+                        <div class="mt-4 flex space-x-2">
+                            <button class="flex-1 bg-primary text-white py-2 rounded-lg hover:bg-blue-700">
+                                <i class="fas fa-shopping-cart mr-1"></i> Beli
+                            </button>
+                            <button class="w-10 h-10 flex items-center justify-center border border-gray-300 rounded-lg hover:bg-gray-100">
+                                <i class="fas fa-eye"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Product 3 -->
+                <div class="product-card bg-white rounded-xl shadow-lg overflow-hidden transition duration-300">
+                    <div class="bg-gray-200 border-2 border-dashed w-full h-48"></div>
+                    <div class="p-4">
+                        <div class="flex justify-between items-start">
+                            <div>
+                                <h3 class="font-bold">Keramik Ukir Tradisional</h3>
+                                <p class="text-sm text-gray-500">UMKM Keramik Indah</p>
+                            </div>
+                            <button class="text-gray-400 hover:text-primary">
+                                <i class="far fa-heart"></i>
+                            </button>
+                        </div>
+                        <div class="flex items-center mt-2">
+                            <div class="flex text-yellow-400">
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                            </div>
+                            <span class="text-xs text-gray-500 ml-2">(56 ulasan)</span>
+                        </div>
+                        <div class="mt-3">
+                            <span class="text-primary font-bold text-lg">Rp 650.000</span>
+                        </div>
+                        <div class="mt-4 flex space-x-2">
+                            <button class="flex-1 bg-primary text-white py-2 rounded-lg hover:bg-blue-700">
+                                <i class="fas fa-shopping-cart mr-1"></i> Beli
+                            </button>
+                            <button class="w-10 h-10 flex items-center justify-center border border-gray-300 rounded-lg hover:bg-gray-100">
+                                <i class="fas fa-eye"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Product 4 -->
+                <div class="product-card bg-white rounded-xl shadow-lg overflow-hidden transition duration-300">
+                    <div class="relative">
+                        <div class="bg-gray-200 border-2 border-dashed w-full h-48"></div>
+                        <div class="absolute top-3 right-3 bg-green-500 text-white text-xs px-2 py-1 rounded">Stok Terbatas</div>
+                    </div>
+                    <div class="p-4">
+                        <div class="flex justify-between items-start">
+                            <div>
+                                <h3 class="font-bold">Kopi Arabika Gayo</h3>
+                                <p class="text-sm text-gray-500">UMKM Kopi Nusantara</p>
+                            </div>
+                            <button class="text-red-500">
+                                <i class="fas fa-heart"></i>
+                            </button>
+                        </div>
+                        <div class="flex items-center mt-2">
+                            <div class="flex text-yellow-400">
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                            </div>
+                            <span class="text-xs text-gray-500 ml-2">(127 ulasan)</span>
+                        </div>
+                        <div class="mt-3">
+                            <span class="text-primary font-bold text-lg">Rp 185.000</span>
+                        </div>
+                        <div class="mt-4 flex space-x-2">
+                            <button class="flex-1 bg-primary text-white py-2 rounded-lg hover:bg-blue-700">
+                                <i class="fas fa-shopping-cart mr-1"></i> Beli
+                            </button>
+                            <button class="w-10 h-10 flex items-center justify-center border border-gray-300 rounded-lg hover:bg-gray-100">
+                                <i class="fas fa-eye"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="text-center mt-12">
+                <button class="border-2 border-primary text-primary font-medium py-3 px-8 rounded-lg hover:bg-blue-50">
+                    Lihat Semua Produk
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <!-- How It Works Section -->
+    <section id="how-it-works" class="py-16 bg-white">
+        <div class="container mx-auto px-4">
+            <div class="text-center mb-16">
+                <h2 class="text-3xl md:text-4xl font-bold mb-4">Cara Berbelanja di ExPort.ID</h2>
+                <div class="w-24 h-1 bg-primary mx-auto mb-6"></div>
+                <p class="text-lg max-w-3xl mx-auto">Proses mudah untuk pembeli internasional mendapatkan produk UMKM Indonesia</p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+                <div class="text-center">
+                    <div class="bg-blue-100 w-20 h-20 rounded-full flex items-center justify-center mx-auto mb-6">
+                        <span class="text-primary font-bold text-2xl">1</span>
+                    </div>
+                    <h3 class="font-bold text-xl mb-3">Temukan Produk</h3>
+                    <p class="text-gray-600">Jelajahi ribuan produk unik dari berbagai UMKM Indonesia</p>
+                </div>
+                <div class="text-center">
+                    <div class="bg-blue-100 w-20 h-20 rounded-full flex items-center justify-center mx-auto mb-6">
+                        <span class="text-primary font-bold text-2xl">2</span>
+                    </div>
+                    <h3 class="font-bold text-xl mb-3">Pesan & Bayar</h3>
+                    <p class="text-gray-600">Lakukan pemesanan dengan sistem pembayaran internasional yang aman</p>
+                </div>
+                <div class="text-center">
+                    <div class="bg-blue-100 w-20 h-20 rounded-full flex items-center justify-center mx-auto mb-6">
+                        <span class="text-primary font-bold text-2xl">3</span>
+                    </div>
+                    <h3 class="font-bold text-xl mb-3">Proses Ekspor</h3>
+                    <p class="text-gray-600">Kami mengurus semua dokumen ekspor dan pengiriman</p>
+                </div>
+                <div class="text-center">
+                    <div class="bg-blue-100 w-20 h-20 rounded-full flex items-center justify-center mx-auto mb-6">
+                        <span class="text-primary font-bold text-2xl">4</span>
+                    </div>
+                    <h3 class="font-bold text-xl mb-3">Produk Diterima</h3>
+                    <p class="text-gray-600">Terima produk di negara Anda dengan aman dan tepat waktu</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Featured Sellers Section -->
+    <section id="sellers" class="py-16 bg-gray-50">
+        <div class="container mx-auto px-4">
+            <div class="text-center mb-16">
+                <h2 class="text-3xl md:text-4xl font-bold mb-4">UMKM Unggulan Kami</h2>
+                <div class="w-24 h-1 bg-primary mx-auto mb-6"></div>
+                <p class="text-lg max-w-3xl mx-auto">Berbagai UMKM Indonesia yang telah bergabung dengan platform kami</p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <div class="bg-white rounded-xl shadow-lg overflow-hidden">
+                    <div class="p-6">
+                        <div class="flex items-center mb-4">
+                            <div class="bg-gray-200 border-2 border-dashed rounded-xl w-16 h-16"></div>
+                            <div class="ml-4">
+                                <h3 class="font-bold">UMKM Anyaman Jaya</h3>
+                                <div class="flex text-yellow-400">
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star-half-alt"></i>
+                                </div>
+                            </div>
+                        </div>
+                        <p class="text-gray-600 mb-4">Spesialis kerajinan rotan anyaman dengan desain modern dan tradisional</p>
+                        <div class="flex justify-between items-center">
+                            <span class="text-sm"><i class="fas fa-map-marker-alt mr-1 text-primary"></i> Jawa Tengah, Indonesia</span>
+                            <span class="text-sm"><i class="fas fa-boxes mr-1 text-primary"></i> 42 produk</span>
+                        </div>
+                    </div>
+                    <div class="bg-gray-100 px-6 py-3 flex justify-between items-center">
+                        <span class="text-sm">Bergabung sejak 2023</span>
+                        <button class="text-primary font-medium hover:text-blue-700">Kunjungi Toko</button>
+                    </div>
+                </div>
+                
+                <div class="bg-white rounded-xl shadow-lg overflow-hidden">
+                    <div class="p-6">
+                        <div class="flex items-center mb-4">
+                            <div class="bg-gray-200 border-2 border-dashed rounded-xl w-16 h-16"></div>
+                            <div class="ml-4">
+                                <h3 class="font-bold">Batik Nusantara</h3>
+                                <div class="flex text-yellow-400">
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                </div>
+                            </div>
+                        </div>
+                        <p class="text-gray-600 mb-4">Produk batik tulis dan cap premium dengan motif tradisional Indonesia</p>
+                        <div class="flex justify-between items-center">
+                            <span class="text-sm"><i class="fas fa-map-marker-alt mr-1 text-primary"></i> Yogyakarta, Indonesia</span>
+                            <span class="text-sm"><i class="fas fa-boxes mr-1 text-primary"></i> 35 produk</span>
+                        </div>
+                    </div>
+                    <div class="bg-gray-100 px-6 py-3 flex justify-between items-center">
+                        <span class="text-sm">Bergabung sejak 2022</span>
+                        <button class="text-primary font-medium hover:text-blue-700">Kunjungi Toko</button>
+                    </div>
+                </div>
+                
+                <div class="bg-white rounded-xl shadow-lg overflow-hidden">
+                    <div class="p-6">
+                        <div class="flex items-center mb-4">
+                            <div class="bg-gray-200 border-2 border-dashed rounded-xl w-16 h-16"></div>
+                            <div class="ml-4">
+                                <h3 class="font-bold">Kopi Nusantara</h3>
+                                <div class="flex text-yellow-400">
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="far fa-star"></i>
+                                </div>
+                            </div>
+                        </div>
+                        <p class="text-gray-600 mb-4">Kopi premium dari berbagai daerah di Indonesia dengan kualitas ekspor</p>
+                        <div class="flex justify-between items-center">
+                            <span class="text-sm"><i class="fas fa-map-marker-alt mr-1 text-primary"></i> Aceh, Indonesia</span>
+                            <span class="text-sm"><i class="fas fa-boxes mr-1 text-primary"></i> 28 produk</span>
+                        </div>
+                    </div>
+                    <div class="bg-gray-100 px-6 py-3 flex justify-between items-center">
+                        <span class="text-sm">Bergabung sejak 2024</span>
+                        <button class="text-primary font-medium hover:text-blue-700">Kunjungi Toko</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Shopping Cart Sidebar -->
+    <div id="cart-sidebar" class="fixed top-0 right-0 h-full w-full md:w-96 bg-white shadow-2xl z-50 transform translate-x-full transition-transform duration-300">
+        <div class="h-full flex flex-col">
+            <div class="p-6 border-b">
+                <div class="flex justify-between items-center">
+                    <h3 class="text-xl font-bold">Keranjang Belanja</h3>
+                    <button id="close-cart" class="text-gray-500 hover:text-gray-700">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+                <p class="text-sm text-gray-500 mt-1">3 produk di keranjang</p>
+            </div>
+            
+            <div class="flex-1 overflow-y-auto p-6">
+                <!-- Cart Item 1 -->
+                <div class="cart-item flex py-4 border-b">
+                    <div class="bg-gray-200 border-2 border-dashed rounded-xl w-16 h-16"></div>
+                    <div class="ml-4 flex-1">
+                        <div class="flex justify-between">
+                            <h4 class="font-medium">Kerajinan Rotan Anyaman</h4>
+                            <button class="text-gray-400 hover:text-red-500">
+                                <i class="fas fa-trash"></i>
+                            </button>
+                        </div>
+                        <p class="text-sm text-gray-500">UMKM Anyaman Jaya</p>
+                        <div class="flex justify-between items-center mt-2">
+                            <div class="flex items-center">
+                                <button class="w-8 h-8 flex items-center justify-center border border-gray-300 rounded-l-lg">
+                                    <i class="fas fa-minus text-xs"></i>
+                                </button>
+                                <span class="w-10 h-8 flex items-center justify-center border-y border-gray-300">1</span>
+                                <button class="w-8 h-8 flex items-center justify-center border border-gray-300 rounded-r-lg">
+                                    <i class="fas fa-plus text-xs"></i>
+                                </button>
+                            </div>
+                            <span class="font-bold">Rp 350.000</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Cart Item 2 -->
+                <div class="cart-item flex py-4 border-b">
+                    <div class="bg-gray-200 border-2 border-dashed rounded-xl w-16 h-16"></div>
+                    <div class="ml-4 flex-1">
+                        <div class="flex justify-between">
+                            <h4 class="font-medium">Kopi Arabika Gayo</h4>
+                            <button class="text-gray-400 hover:text-red-500">
+                                <i class="fas fa-trash"></i>
+                            </button>
+                        </div>
+                        <p class="text-sm text-gray-500">UMKM Kopi Nusantara</p>
+                        <div class="flex justify-between items-center mt-2">
+                            <div class="flex items-center">
+                                <button class="w-8 h-8 flex items-center justify-center border border-gray-300 rounded-l-lg">
+                                    <i class="fas fa-minus text-xs"></i>
+                                </button>
+                                <span class="w-10 h-8 flex items-center justify-center border-y border-gray-300">2</span>
+                                <button class="w-8 h-8 flex items-center justify-center border border-gray-300 rounded-r-lg">
+                                    <i class="fas fa-plus text-xs"></i>
+                                </button>
+                            </div>
+                            <span class="font-bold">Rp 370.000</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Cart Item 3 -->
+                <div class="cart-item flex py-4 border-b">
+                    <div class="bg-gray-200 border-2 border-dashed rounded-xl w-16 h-16"></div>
+                    <div class="ml-4 flex-1">
+                        <div class="flex justify-between">
+                            <h4 class="font-medium">Keramik Ukir Tradisional</h4>
+                            <button class="text-gray-400 hover:text-red-500">
+                                <i class="fas fa-trash"></i>
+                            </button>
+                        </div>
+                        <p class="text-sm text-gray-500">UMKM Keramik Indah</p>
+                        <div class="flex justify-between items-center mt-2">
+                            <div class="flex items-center">
+                                <button class="w-8 h-8 flex items-center justify-center border border-gray-300 rounded-l-lg">
+                                    <i class="fas fa-minus text-xs"></i>
+                                </button>
+                                <span class="w-10 h-8 flex items-center justify-center border-y border-gray-300">1</span>
+                                <button class="w-8 h-8 flex items-center justify-center border border-gray-300 rounded-r-lg">
+                                    <i class="fas fa-plus text-xs"></i>
+                                </button>
+                            </div>
+                            <span class="font-bold">Rp 650.000</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="p-6 border-t">
+                <div class="space-y-3 mb-6">
+                    <div class="flex justify-between">
+                        <span>Subtotal</span>
+                        <span>Rp 1.370.000</span>
+                    </div>
+                    <div class="flex justify-between">
+                        <span>Pengiriman</span>
+                        <span>Rp 250.000</span>
+                    </div>
+                    <div class="flex justify-between">
+                        <span>Asuransi</span>
+                        <span>Rp 50.000</span>
+                    </div>
+                    <div class="flex justify-between font-bold text-lg">
+                        <span>Total</span>
+                        <span>Rp 1.670.000</span>
+                    </div>
+                </div>
+                <button class="w-full bg-primary text-white py-3 rounded-lg font-bold hover:bg-blue-700">
+                    Lanjut ke Pembayaran
+                </button>
+                <button class="w-full mt-3 border border-primary text-primary py-3 rounded-lg font-bold hover:bg-blue-50">
+                    Lanjut Belanja
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Product Detail Modal -->
+    <div id="product-modal" class="hidden fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4">
+        <div class="bg-white rounded-xl shadow-lg w-full max-w-4xl max-h-[90vh] overflow-y-auto">
+            <div class="p-6">
+                <div class="flex justify-between items-start mb-4">
+                    <h3 class="text-xl font-bold">Detail Produk</h3>
+                    <button id="close-product-modal" class="text-gray-500 hover:text-gray-700">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                    <div>
+                        <div class="bg-gray-200 border-2 border-dashed w-full h-64 rounded-xl mb-4"></div>
+                        <div class="grid grid-cols-4 gap-2">
+                            <div class="bg-gray-200 border-2 border-dashed rounded-xl h-16"></div>
+                            <div class="bg-gray-200 border-2 border-dashed rounded-xl h-16"></div>
+                            <div class="bg-gray-200 border-2 border-dashed rounded-xl h-16"></div>
+                            <div class="bg-gray-200 border-2 border-dashed rounded-xl h-16"></div>
+                        </div>
+                    </div>
+                    
+                    <div>
+                        <h2 class="text-2xl font-bold mb-2">Kerajinan Rotan Anyaman Premium</h2>
+                        <div class="flex items-center mb-4">
+                            <div class="flex text-yellow-400">
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star-half-alt"></i>
+                            </div>
+                            <span class="text-sm text-gray-500 ml-2">(42 ulasan)</span>
+                        </div>
+                        
+                        <div class="bg-blue-50 p-4 rounded-lg mb-6">
+                            <div class="flex items-center">
+                                <div class="bg-gray-200 border-2 border-dashed rounded-xl w-10 h-10"></div>
+                                <div class="ml-3">
+                                    <p class="font-medium">UMKM Anyaman Jaya</p>
+                                    <div class="flex text-yellow-400">
+                                        <i class="fas fa-star text-xs"></i>
+                                        <i class="fas fa-star text-xs"></i>
+                                        <i class="fas fa-star text-xs"></i>
+                                        <i class="fas fa-star text-xs"></i>
+                                        <i class="fas fa-star-half-alt text-xs"></i>
+                                    </div>
+                                </div>
+                            </div>
+                            <button class="mt-4 w-full bg-white border border-primary text-primary py-2 rounded-lg hover:bg-blue-50">
+                                Kunjungi Toko
+                            </button>
+                        </div>
+                        
+                        <div class="mb-6">
+                            <h4 class="font-bold mb-2">Deskripsi Produk</h4>
+                            <p class="text-gray-600 mb-4">
+                                Kerajinan rotan anyaman tangan dengan desain modern dan tradisional. Dibuat oleh pengrajin berpengalaman dari Jawa Tengah. Produk ini tahan lama dan ramah lingkungan.
+                            </p>
+                            <ul class="space-y-2">
+                                <li class="flex items-start">
+                                    <i class="fas fa-check-circle text-green-500 mt-1 mr-2"></i>
+                                    <span>Bahan: Rotan alami pilihan</span>
+                                </li>
+                                <li class="flex items-start">
+                                    <i class="fas fa-check-circle text-green-500 mt-1 mr-2"></i>
+                                    <span>Dimensi: 40cm x 30cm x 25cm</span>
+                                </li>
+                                <li class="flex items-start">
+                                    <i class="fas fa-check-circle text-green-500 mt-1 mr-2"></i>
+                                    <span>Berat: 1.2 kg</span>
+                                </li>
+                                <li class="flex items-start">
+                                    <i class="fas fa-check-circle text-green-500 mt-1 mr-2"></i>
+                                    <span>Warna: Natural, Coklat, Hitam</span>
+                                </li>
+                            </ul>
+                        </div>
+                        
+                        <div class="flex items-end mb-6">
+                            <span class="text-primary font-bold text-2xl">Rp 350.000</span>
+                            <span class="text-gray-500 text-sm line-through ml-2">Rp 410.000</span>
+                            <span class="ml-auto bg-red-500 text-white text-xs px-2 py-1 rounded">Diskon 15%</span>
+                        </div>
+                        
+                        <div class="flex space-x-4">
+                            <div class="flex items-center border border-gray-300 rounded-lg">
+                                <button class="w-10 h-10 flex items-center justify-center">
+                                    <i class="fas fa-minus text-xs"></i>
+                                </button>
+                                <span class="w-12 h-10 flex items-center justify-center">1</span>
+                                <button class="w-10 h-10 flex items-center justify-center">
+                                    <i class="fas fa-plus text-xs"></i>
+                                </button>
+                            </div>
+                            <button class="flex-1 bg-primary text-white py-3 rounded-lg font-bold hover:bg-blue-700">
+                                <i class="fas fa-shopping-cart mr-2"></i> Tambah ke Keranjang
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="mt-8">
+                    <h3 class="text-xl font-bold mb-4">Ulasan Pembeli</h3>
+                    <div class="space-y-6">
+                        <div class="border border-gray-200 rounded-lg p-4">
+                            <div class="flex items-start">
+                                <div class="bg-gray-200 border-2 border-dashed rounded-xl w-10 h-10"></div>
+                                <div class="ml-4 flex-1">
+                                    <div class="flex justify-between">
+                                        <h4 class="font-bold">Tanaka Kenji</h4>
+                                        <div class="flex text-yellow-400">
+                                            <i class="fas fa-star"></i>
+                                            <i class="fas fa-star"></i>
+                                            <i class="fas fa-star"></i>
+                                            <i class="fas fa-star"></i>
+                                            <i class="fas fa-star"></i>
+                                        </div>
+                                    </div>
+                                    <p class="text-sm text-gray-500 mb-2">Dari Jepang | 25 Juni 2025</p>
+                                    <p>Produk sangat bagus kualitasnya. Pengiriman cepat dan pengemasan aman. Saya akan membeli lagi.</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="border border-gray-200 rounded-lg p-4">
+                            <div class="flex items-start">
+                                <div class="bg-gray-200 border-2 border-dashed rounded-xl w-10 h-10"></div>
+                                <div class="ml-4 flex-1">
+                                    <div class="flex justify-between">
+                                        <h4 class="font-bold">Sarah Johnson</h4>
+                                        <div class="flex text-yellow-400">
+                                            <i class="fas fa-star"></i>
+                                            <i class="fas fa-star"></i>
+                                            <i class="fas fa-star"></i>
+                                            <i class="fas fa-star"></i>
+                                            <i class="far fa-star"></i>
+                                        </div>
+                                    </div>
+                                    <p class="text-sm text-gray-500 mb-2">Dari Amerika Serikat | 18 Juni 2025</p>
+                                    <p>Desainnya sangat unik dan natural. Hanya saja pengiriman agak lama, tapi sepadan dengan kualitas produknya.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- User Account Modal -->
+    <div id="user-modal" class="hidden fixed right-4 top-16 bg-white shadow-lg rounded-lg w-64 z-50">
+        <div class="p-4 border-b">
+            <div class="flex items-center">
+                <div class="bg-gray-200 border-2 border-dashed rounded-xl w-10 h-10"></div>
+                <div class="ml-3">
+                    <p class="font-medium">John Smith</p>
+                    <p class="text-xs text-gray-500">john@example.com</p>
+                </div>
+            </div>
+        </div>
+        <div class="p-2">
+            <a href="#" class="flex items-center px-4 py-2 hover:bg-gray-100 rounded-lg">
+                <i class="fas fa-user mr-3 text-gray-500"></i>
+                <span>Profil Saya</span>
+            </a>
+            <a href="#" class="flex items-center px-4 py-2 hover:bg-gray-100 rounded-lg">
+                <i class="fas fa-shopping-bag mr-3 text-gray-500"></i>
+                <span>Pesanan Saya</span>
+            </a>
+            <a href="#" class="flex items-center px-4 py-2 hover:bg-gray-100 rounded-lg">
+                <i class="fas fa-heart mr-3 text-gray-500"></i>
+                <span>Favorit</span>
+            </a>
+            <a href="#" class="flex items-center px-4 py-2 hover:bg-gray-100 rounded-lg">
+                <i class="fas fa-map-marker-alt mr-3 text-gray-500"></i>
+                <span>Alamat</span>
+            </a>
+        </div>
+        <div class="p-4 border-t">
+            <button class="w-full bg-gray-100 text-gray-800 py-2 rounded-lg hover:bg-gray-200">
+                <i class="fas fa-sign-out-alt mr-2"></i> Keluar
+            </button>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="bg-dark text-white pt-16 pb-8">
+        <div class="container mx-auto px-4">
+            <div class="grid md:grid-cols-4 gap-8 mb-12">
+                <div>
+                    <h3 class="text-xl font-bold mb-6">ExPort<span class="text-accent">.ID</span></h3>
+                    <p class="mb-6">Platform ekspor pertama di Indonesia yang menghubungkan pembeli internasional langsung dengan UMKM lokal.</p>
+                    <div class="flex space-x-4">
+                        <a href="#" class="text-gray-400 hover:text-white">
+                            <i class="fab fa-facebook-f"></i>
+                        </a>
+                        <a href="#" class="text-gray-400 hover:text-white">
+                            <i class="fab fa-twitter"></i>
+                        </a>
+                        <a href="#" class="text-gray-400 hover:text-white">
+                            <i class="fab fa-instagram"></i>
+                        </a>
+                        <a href="#" class="text-gray-400 hover:text-white">
+                            <i class="fab fa-linkedin-in"></i>
+                        </a>
+                    </div>
+                </div>
+                
+                <div>
+                    <h4 class="text-lg font-bold mb-6">Navigasi</h4>
+                    <ul class="space-y-3">
+                        <li><a href="#home" class="hover:text-accent">Beranda</a></li>
+                        <li><a href="#products" class="hover:text-accent">Produk</a></li>
+                        <li><a href="#categories" class="hover:text-accent">Kategori</a></li>
+                        <li><a href="#sellers" class="hover:text-accent">UMKM</a></li>
+                        <li><a href="#how-it-works" class="hover:text-accent">Cara Kerja</a></li>
+                    </ul>
+                </div>
+                
+                <div>
+                    <h4 class="text-lg font-bold mb-6">Bantuan</h4>
+                    <ul class="space-y-3">
+                        <li><a href="#" class="hover:text-accent">Cara Berbelanja</a></li>
+                        <li><a href="#" class="hover:text-accent">Pembayaran</a></li>
+                        <li><a href="#" class="hover:text-accent">Pengiriman</a></li>
+                        <li><a href="#" class="hover:text-accent">Kebijakan Pengembalian</a></li>
+                        <li><a href="#" class="hover:text-accent">FAQ</a></li>
+                    </ul>
+                </div>
+                
+                <div>
+                    <h4 class="text-lg font-bold mb-6">Hubungi Kami</h4>
+                    <ul class="space-y-3">
+                        <li class="flex items-start">
+                            <i class="fas fa-map-marker-alt mt-1 mr-3 text-accent"></i>
+                            <span>Jl. Digitalisasi Ekspor No. 25, Jakarta</span>
+                        </li>
+                        <li class="flex items-start">
+                            <i class="fas fa-phone mt-1 mr-3 text-accent"></i>
+                            <span>+62 21 1234 5678</span>
+                        </li>
+                        <li class="flex items-start">
+                            <i class="fas fa-envelope mt-1 mr-3 text-accent"></i>
+                            <span>support@exportid.digital</span>
+                        </li>
+                        <li class="flex items-start">
+                            <i class="fab fa-whatsapp mt-1 mr-3 text-accent"></i>
+                            <span>+62 812 3456 7890</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="border-t border-gray-700 pt-8 text-center text-gray-400">
+                <p>&copy; 2025 ExPort.ID - Platform Ekspor UMKM Indonesia. Hak Cipta Dilindungi.</p>
+                <p class="mt-2">Proposal untuk BI-OJK Hackathon 2025</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Shopping Cart Toggle
+        document.getElementById('cart-btn').addEventListener('click', () => {
+            document.getElementById('cart-sidebar').classList.remove('translate-x-full');
+        });
+
+        document.getElementById('close-cart').addEventListener('click', () => {
+            document.getElementById('cart-sidebar').classList.add('translate-x-full');
+        });
+
+        // User Menu Toggle
+        document.getElementById('user-menu').addEventListener('click', () => {
+            const userModal = document.getElementById('user-modal');
+            userModal.classList.toggle('hidden');
+        });
+
+        // Close modals when clicking outside
+        document.addEventListener('click', (e) => {
+            const userModal = document.getElementById('user-modal');
+            if (!e.target.closest('#user-menu') && !e.target.closest('#user-modal')) {
+                userModal.classList.add('hidden');
+            }
+        });
+
+        // Product Modal
+        document.querySelectorAll('.fa-eye').forEach(button => {
+            button.addEventListener('click', () => {
+                document.getElementById('product-modal').classList.remove('hidden');
+            });
+        });
+
+        document.getElementById('close-product-modal').addEventListener('click', () => {
+            document.getElementById('product-modal').classList.add('hidden');
+        });
+
+        // Language Selector
+        document.querySelectorAll('.language-selector').forEach(button => {
+            button.addEventListener('click', () => {
+                const currentLang = document.querySelector('.language-selector span:last-child');
+                currentLang.textContent = button.textContent.trim();
+                
+                // Change button text
+                const langText = button.querySelector('span:last-child').textContent;
+                document.querySelector('#user-menu + div span').textContent = langText;
+            });
+        });
+
+        // Add to Cart
+        document.querySelectorAll('.fa-shopping-cart').forEach(button => {
+            button.addEventListener('click', function() {
+                const productCard = this.closest('.product-card');
+                const productName = productCard.querySelector('h3').textContent;
+                const productPrice = productCard.querySelector('.text-primary').textContent;
+                
+                // Show notification
+                alert(`${productName} telah ditambahkan ke keranjang!`);
+                
+                // Update cart count
+                const cartCount = document.querySelector('#cart-btn span');
+                cartCount.textContent = parseInt(cartCount.textContent) + 1;
+            });
+        });
+
+        // Smooth scrolling for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    window.scrollTo({
+                        top: target.offsetTop - 80,
+                        behavior: 'smooth'
+                    });
+                }
+            });
+        });
+
+        // Initialize tooltips
+        document.querySelectorAll('.payment-method').forEach(method => {
+            method.addEventListener('mouseover', function() {
+                const tooltip = document.createElement('div');
+                tooltip.className = 'absolute bottom-full mb-2 px-2 py-1 bg-black text-white text-xs rounded whitespace-nowrap';
+                tooltip.textContent = this.querySelector('span').textContent + ' tersedia';
+                
+                this.appendChild(tooltip);
+                
+                // Position tooltip
+                const rect = this.getBoundingClientRect();
+                tooltip.style.left = '50%';
+                tooltip.style.transform = 'translateX(-50%)';
+                
+                method.addEventListener('mouseout', () => {
+                    tooltip.remove();
+                });
+            });
+        });
+    </script>
+</body>
+</html>
