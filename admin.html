@@ -1,1 +1,1113 @@
 
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ExPort.ID - Platform AI-as-a-Service untuk Akselerasi Ekspor UMKM</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#2563EB',
+                        secondary: '#059669',
+                        accent: '#F59E0B',
+                        dark: '#1E293B',
+                        light: '#F8FAFC'
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+        body {
+            font-family: 'Poppins', sans-serif;
+            scroll-behavior: smooth;
+        }
+        .hero-gradient {
+            background: linear-gradient(135deg, #2563EB 0%, #059669 100%);
+        }
+        .feature-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+        }
+        .timeline {
+            position: relative;
+        }
+        .timeline::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            left: 50%;
+            width: 4px;
+            background: #2563EB;
+            margin-left: -2px;
+        }
+        .timeline-item {
+            position: relative;
+            margin-bottom: 50px;
+        }
+        .timeline-item:nth-child(odd) .timeline-content {
+            margin-left: auto;
+            text-align: right;
+        }
+        .timeline-item:nth-child(even) .timeline-content {
+            margin-right: auto;
+            text-align: left;
+        }
+        .timeline-content::before {
+            content: '';
+            position: absolute;
+            top: 24px;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background: #2563EB;
+        }
+        .timeline-item:nth-child(odd) .timeline-content::before {
+            right: -60px;
+        }
+        .timeline-item:nth-child(even) .timeline-content::before {
+            left: -60px;
+        }
+        .team-card:hover img {
+            transform: scale(1.05);
+        }
+        .chat-bubble {
+            position: relative;
+            border-radius: 20px;
+        }
+        .ai-message::after {
+            border-right-color: #E5E7EB;
+            left: -20px;
+            top: 15px;
+        }
+        .user-message::after {
+            border-left-color: #2563EB;
+            right: -20px;
+            top: 15px;
+        }
+        .mockup-container {
+            perspective: 1000px;
+        }
+        .mockup {
+            transform: rotateY(-10deg);
+            box-shadow: 20px 20px 60px rgba(0, 0, 0, 0.1);
+            transition: all 0.5s ease;
+        }
+        .mockup:hover {
+            transform: rotateY(0deg);
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+        }
+        .floating-label {
+            transform: translateY(0.5rem);
+            transition: all 0.2s ease-out;
+        }
+        input:focus + .floating-label,
+        input:not(:placeholder-shown) + .floating-label {
+            transform: translateY(-1.25rem) scale(0.75);
+            color: #2563EB;
+        }
+        .fade-in {
+            animation: fadeIn 0.5s ease-in;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .loading-spinner {
+            animation: spin 1s linear infinite;
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        .transaction-success {
+            animation: successPulse 2s ease-in-out;
+        }
+        @keyframes successPulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+    </style>
+</head>
+<body class="bg-light text-dark">
+    <!-- Header/Navigation -->
+    <header class="bg-white shadow-md fixed w-full z-50">
+        <div class="container mx-auto px-4">
+            <div class="flex justify-between items-center py-4">
+                <div class="flex items-center">
+                    <div class="bg-primary w-10 h-10 rounded-lg flex items-center justify-center">
+                        <i class="fas fa-globe-asia text-white text-xl"></i>
+                    </div>
+                    <a href="#" class="ml-3 text-xl font-bold text-primary">ExPort<span class="text-accent">.ID</span></a>
+                </div>
+                <nav class="hidden md:flex space-x-8">
+                    <a href="#home" class="text-primary font-medium hover:text-accent">Beranda</a>
+                    <a href="#about" class="font-medium hover:text-primary">Tentang</a>
+                    <a href="#solution" class="font-medium hover:text-primary">Solusi</a>
+                    <a href="#dashboard" class="font-medium hover:text-primary">Dashboard</a>
+                    <a href="#poc" class="font-medium hover:text-primary">Demo</a>
+                </nav>
+                <div class="flex items-center space-x-4">
+                    <button id="login-btn" class="bg-primary text-white py-2 px-4 rounded-lg font-medium hover:bg-blue-700 transition">
+                        Masuk
+                    </button>
+                    <button id="register-btn" class="border-2 border-primary text-primary py-2 px-4 rounded-lg font-medium hover:bg-blue-50 transition">
+                        Daftar
+                    </button>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section id="home" class="hero-gradient pt-32 pb-20">
+        <div class="container mx-auto px-4">
+            <div class="flex flex-col md:flex-row items-center">
+                <div class="md:w-1/2 mb-10 md:mb-0">
+                    <h1 class="text-4xl md:text-5xl font-bold text-white mb-4">Akselerasi Ekspor UMKM dengan Kecerdasan Buatan</h1>
+                    <p class="text-xl text-white mb-8">Platform AI-as-a-Service untuk membantu UMKM Indonesia menembus pasar global dengan mudah dan efisien.</p>
+                    <div class="flex flex-col sm:flex-row space-y-4 sm:space-y-0 sm:space-x-4">
+                        <a href="#dashboard" class="bg-accent text-white font-medium py-3 px-8 rounded-lg shadow-lg hover:bg-yellow-600 transition duration-300 text-center">
+                            Mulai Sekarang
+                        </a>
+                        <a href="#solution" class="bg-white text-primary font-medium py-3 px-8 rounded-lg shadow-lg hover:bg-gray-100 transition duration-300 text-center">
+                            Pelajari Solusi
+                        </a>
+                    </div>
+                </div>
+                <div class="md:w-1/2 flex justify-center">
+                    <div class="relative">
+                        <div class="bg-white rounded-2xl shadow-xl p-6 max-w-md">
+                            <div class="flex justify-between items-center mb-4">
+                                <h3 class="font-bold text-lg">Dashboard ExPort.ID</h3>
+                                <span class="bg-green-100 text-green-800 text-xs px-2 py-1 rounded-full">Online</span>
+                            </div>
+                            <div class="space-y-4">
+                                <div class="bg-blue-50 p-4 rounded-lg">
+                                    <div class="flex justify-between">
+                                        <span class="font-medium">Produk Ditranslasikan</span>
+                                        <span class="text-primary font-bold">124</span>
+                                    </div>
+                                    <div class="h-2 bg-blue-200 rounded-full mt-2">
+                                        <div class="h-2 bg-primary rounded-full" style="width: 80%"></div>
+                                    </div>
+                                </div>
+                                <div class="bg-green-50 p-4 rounded-lg">
+                                    <div class="flex justify-between">
+                                        <span class="font-medium">Pertanyaan Dijawab AI</span>
+                                        <span class="text-secondary font-bold">87%</span>
+                                    </div>
+                                    <div class="h-2 bg-green-200 rounded-full mt-2">
+                                        <div class="h-2 bg-secondary rounded-full" style="width: 87%"></div>
+                                    </div>
+                                </div>
+                                <div class="bg-yellow-50 p-4 rounded-lg">
+                                    <div class="flex justify-between">
+                                        <span class="font-medium">Transaksi Berhasil</span>
+                                        <span class="text-accent font-bold">42</span>
+                                    </div>
+                                    <div class="h-2 bg-yellow-200 rounded-full mt-2">
+                                        <div class="h-2 bg-accent rounded-full" style="width: 65%"></div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="mt-6 flex justify-center">
+                                <button id="hero-cta" class="bg-primary text-white py-2 px-6 rounded-lg text-sm font-medium hover:bg-blue-700">
+                                    Mulai Ekspor Sekarang
+                                </button>
+                            </div>
+                        </div>
+                        <div class="absolute -top-4 -right-4 bg-accent text-white py-1 px-3 rounded-full font-bold text-sm transform rotate-12">
+                            AI-Powered
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section id="about" class="py-20 bg-white">
+        <!-- Konten about section seperti sebelumnya -->
+    </section>
+
+    <!-- Solution Section -->
+    <section id="solution" class="py-20 bg-gray-50">
+        <!-- Konten solution section seperti sebelumnya -->
+    </section>
+
+    <!-- Dashboard Section -->
+    <section id="dashboard" class="py-20 bg-white">
+        <div class="container mx-auto px-4">
+            <div class="text-center mb-16">
+                <h2 class="text-3xl md:text-4xl font-bold mb-4">Dashboard UMKM</h2>
+                <div class="w-24 h-1 bg-primary mx-auto mb-6"></div>
+                <p class="text-lg max-w-3xl mx-auto">Kelola produk, pemesanan, dan ekspor Anda dalam satu platform</p>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-4 gap-6">
+                <!-- Sidebar Menu -->
+                <div class="lg:col-span-1 bg-gray-50 rounded-xl shadow p-6 h-fit">
+                    <div class="flex items-center mb-8">
+                        <div class="bg-gray-200 border-2 border-dashed rounded-xl w-16 h-16"></div>
+                        <div class="ml-4">
+                            <h3 class="font-bold">UMKM Kerajinan Anyaman</h3>
+                            <p class="text-sm text-gray-600">Status: <span class="text-green-600">Aktif</span></p>
+                        </div>
+                    </div>
+                    
+                    <nav class="space-y-2">
+                        <button class="dashboard-tab w-full text-left py-3 px-4 rounded-lg bg-primary text-white font-medium" data-tab="dashboard-overview">
+                            <i class="fas fa-chart-line mr-2"></i> Overview
+                        </button>
+                        <button class="dashboard-tab w-full text-left py-3 px-4 rounded-lg hover:bg-gray-100" data-tab="dashboard-products">
+                            <i class="fas fa-box mr-2"></i> Produk Saya
+                        </button>
+                        <button class="dashboard-tab w-full text-left py-3 px-4 rounded-lg hover:bg-gray-100" data-tab="dashboard-orders">
+                            <i class="fas fa-shopping-cart mr-2"></i> Pesanan
+                        </button>
+                        <button class="dashboard-tab w-full text-left py-3 px-4 rounded-lg hover:bg-gray-100" data-tab="dashboard-translations">
+                            <i class="fas fa-language mr-2"></i> Terjemahan
+                        </button>
+                        <button class="dashboard-tab w-full text-left py-3 px-4 rounded-lg hover:bg-gray-100" data-tab="dashboard-documents">
+                            <i class="fas fa-file-pdf mr-2"></i> Dokumen Ekspor
+                        </button>
+                        <button class="dashboard-tab w-full text-left py-3 px-4 rounded-lg hover:bg-gray-100" data-tab="dashboard-payments">
+                            <i class="fas fa-money-check-alt mr-2"></i> Pembayaran
+                        </button>
+                    </nav>
+                </div>
+                
+                <!-- Dashboard Content -->
+                <div class="lg:col-span-3">
+                    <!-- Overview Tab -->
+                    <div id="dashboard-overview" class="dashboard-content bg-white rounded-xl shadow-lg p-6 fade-in">
+                        <h3 class="text-xl font-bold mb-6">Ringkasan Aktivitas Ekspor</h3>
+                        
+                        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+                            <div class="bg-blue-50 p-6 rounded-lg">
+                                <div class="flex justify-between items-start">
+                                    <div>
+                                        <h4 class="text-lg font-bold text-blue-800">Total Penjualan</h4>
+                                        <p class="text-2xl font-bold mt-2">Rp 42.500.000</p>
+                                    </div>
+                                    <div class="bg-blue-100 p-3 rounded-lg">
+                                        <i class="fas fa-coins text-blue-600 text-xl"></i>
+                                    </div>
+                                </div>
+                                <p class="text-sm mt-2 text-blue-700"><span class="text-green-600">+12%</span> dari bulan lalu</p>
+                            </div>
+                            
+                            <div class="bg-green-50 p-6 rounded-lg">
+                                <div class="flex justify-between items-start">
+                                    <div>
+                                        <h4 class="text-lg font-bold text-green-800">Pesanan Aktif</h4>
+                                        <p class="text-2xl font-bold mt-2">8 Pesanan</p>
+                                    </div>
+                                    <div class="bg-green-100 p-3 rounded-lg">
+                                        <i class="fas fa-shopping-bag text-green-600 text-xl"></i>
+                                    </div>
+                                </div>
+                                <p class="text-sm mt-2 text-green-700">3 pesanan menunggu pembayaran</p>
+                            </div>
+                            
+                            <div class="bg-purple-50 p-6 rounded-lg">
+                                <div class="flex justify-between items-start">
+                                    <div>
+                                        <h4 class="text-lg font-bold text-purple-800">Produk Tersedia</h4>
+                                        <p class="text-2xl font-bold mt-2">15 Produk</p>
+                                    </div>
+                                    <div class="bg-purple-100 p-3 rounded-lg">
+                                        <i class="fas fa-boxes text-purple-600 text-xl"></i>
+                                    </div>
+                                </div>
+                                <p class="text-sm mt-2 text-purple-700">5 produk baru bulan ini</p>
+                            </div>
+                        </div>
+                        
+                        <div class="bg-white border border-gray-200 rounded-lg shadow p-6 mb-8">
+                            <h4 class="font-bold mb-4">Statistik Penjualan 6 Bulan Terakhir</h4>
+                            <div class="h-64">
+                                <canvas id="salesChart"></canvas>
+                            </div>
+                        </div>
+                        
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <div class="bg-yellow-50 p-6 rounded-lg">
+                                <h4 class="font-bold mb-2">Tugas Mendesak</h4>
+                                <ul class="space-y-3">
+                                    <li class="flex items-center">
+                                        <i class="fas fa-exclamation-circle text-red-500 mr-2"></i>
+                                        <span>Verifikasi pembayaran untuk pesanan #ORD-2107</span>
+                                    </li>
+                                    <li class="flex items-center">
+                                        <i class="fas fa-exclamation-circle text-yellow-500 mr-2"></i>
+                                        <span>Tambahkan stok untuk "Kerajinan Rotan Anyaman"</span>
+                                    </li>
+                                    <li class="flex items-center">
+                                        <i class="fas fa-exclamation-circle text-blue-500 mr-2"></i>
+                                        <span>Lengkapi dokumen ekspor untuk pengiriman ke Jepang</span>
+                                    </li>
+                                </ul>
+                            </div>
+                            
+                            <div class="bg-gray-50 p-6 rounded-lg">
+                                <h4 class="font-bold mb-2">Aktivitas Terbaru</h4>
+                                <ul class="space-y-3">
+                                    <li class="flex items-start">
+                                        <div class="bg-green-100 p-2 rounded-full mr-3">
+                                            <i class="fas fa-check-circle text-green-600"></i>
+                                        </div>
+                                        <div>
+                                            <p>Pesanan #ORD-2105 telah dikirim</p>
+                                            <p class="text-sm text-gray-500">Hari ini, 10:24 WIB</p>
+                                        </div>
+                                    </li>
+                                    <li class="flex items-start">
+                                        <div class="bg-blue-100 p-2 rounded-full mr-3">
+                                            <i class="fas fa-comment-alt text-blue-600"></i>
+                                        </div>
+                                        <div>
+                                            <p>Pertanyaan baru dari pembeli di Malaysia</p>
+                                            <p class="text-sm text-gray-500">Kemarin, 15:42 WIB</p>
+                                        </div>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Products Tab -->
+                    <div id="dashboard-products" class="dashboard-content hidden bg-white rounded-xl shadow-lg p-6">
+                        <div class="flex justify-between items-center mb-6">
+                            <h3 class="text-xl font-bold">Produk Saya</h3>
+                            <button id="add-product-btn" class="bg-primary text-white py-2 px-4 rounded-lg hover:bg-blue-700 flex items-center">
+                                <i class="fas fa-plus mr-2"></i> Tambah Produk
+                            </button>
+                        </div>
+                        
+                        <div class="overflow-x-auto">
+                            <table class="min-w-full divide-y divide-gray-200">
+                                <thead class="bg-gray-50">
+                                    <tr>
+                                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Produk</th>
+                                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Harga</th>
+                                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Stok</th>
+                                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
+                                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Aksi</th>
+                                    </tr>
+                                </thead>
+                                <tbody class="bg-white divide-y divide-gray-200">
+                                    <tr>
+                                        <td class="px-6 py-4 whitespace-nowrap">
+                                            <div class="flex items-center">
+                                                <div class="bg-gray-200 border-2 border-dashed rounded-xl w-10 h-10"></div>
+                                                <div class="ml-4">
+                                                    <div class="text-sm font-medium text-gray-900">Kerajinan Rotan Anyaman</div>
+                                                    <div class="text-sm text-gray-500">ID: PRD-001</div>
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">Rp 350.000</td>
+                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">42</td>
+                                        <td class="px-6 py-4 whitespace-nowrap">
+                                            <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">Aktif</span>
+                                        </td>
+                                        <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
+                                            <a href="#" class="text-blue-600 hover:text-blue-900 mr-3">Edit</a>
+                                            <a href="#" class="text-red-600 hover:text-red-900">Hapus</a>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="px-6 py-4 whitespace-nowrap">
+                                            <div class="flex items-center">
+                                                <div class="bg-gray-200 border-2 border-dashed rounded-xl w-10 h-10"></div>
+                                                <div class="ml-4">
+                                                    <div class="text-sm font-medium text-gray-900">Batik Tulis Cap</div>
+                                                    <div class="text-sm text-gray-500">ID: PRD-002</div>
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">Rp 850.000</td>
+                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">18</td>
+                                        <td class="px-6 py-4 whitespace-nowrap">
+                                            <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">Aktif</span>
+                                        </td>
+                                        <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
+                                            <a href="#" class="text-blue-600 hover:text-blue-900 mr-3">Edit</a>
+                                            <a href="#" class="text-red-600 hover:text-red-900">Hapus</a>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="px-6 py-4 whitespace-nowrap">
+                                            <div class="flex items-center">
+                                                <div class="bg-gray-200 border-2 border-dashed rounded-xl w-10 h-10"></div>
+                                                <div class="ml-4">
+                                                    <div class="text-sm font-medium text-gray-900">Keramik Ukir</div>
+                                                    <div class="text-sm text-gray-500">ID: PRD-003</div>
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">Rp 650.000</td>
+                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">0</td>
+                                        <td class="px-6 py-4 whitespace-nowrap">
+                                            <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-red-100 text-red-800">Habis</span>
+                                        </td>
+                                        <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
+                                            <a href="#" class="text-blue-600 hover:text-blue-900 mr-3">Edit</a>
+                                            <a href="#" class="text-red-600 hover:text-red-900">Hapus</a>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    
+                    <!-- Orders Tab -->
+                    <div id="dashboard-orders" class="dashboard-content hidden bg-white rounded-xl shadow-lg p-6">
+                        <h3 class="text-xl font-bold mb-6">Pesanan Ekspor</h3>
+                        
+                        <div class="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">
+                            <div class="border border-gray-200 rounded-lg p-4 text-center hover:bg-blue-50 cursor-pointer">
+                                <div class="text-2xl font-bold text-blue-600">8</div>
+                                <div class="text-sm">Total Pesanan</div>
+                            </div>
+                            <div class="border border-gray-200 rounded-lg p-4 text-center hover:bg-yellow-50 cursor-pointer">
+                                <div class="text-2xl font-bold text-yellow-600">3</div>
+                                <div class="text-sm">Menunggu Pembayaran</div>
+                            </div>
+                            <div class="border border-gray-200 rounded-lg p-4 text-center hover:bg-purple-50 cursor-pointer">
+                                <div class="text-2xl font-bold text-purple-600">2</div>
+                                <div class="text-sm">Proses Pengemasan</div>
+                            </div>
+                            <div class="border border-gray-200 rounded-lg p-4 text-center hover:bg-green-50 cursor-pointer">
+                                <div class="text-2xl font-bold text-green-600">3</div>
+                                <div class="text-sm">Terkirim</div>
+                            </div>
+                        </div>
+                        
+                        <div class="overflow-x-auto">
+                            <table class="min-w-full divide-y divide-gray-200">
+                                <thead class="bg-gray-50">
+                                    <tr>
+                                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">ID Pesanan</th>
+                                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Tanggal</th>
+                                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Pembeli</th>
+                                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Total</th>
+                                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
+                                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Aksi</th>
+                                    </tr>
+                                </thead>
+                                <tbody class="bg-white divide-y divide-gray-200">
+                                    <tr>
+                                        <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">#ORD-2107</td>
+                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">25 Jun 2025</td>
+                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">Tanaka Co. (Jepang)</td>
+                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">Rp 4.250.000</td>
+                                        <td class="px-6 py-4 whitespace-nowrap">
+                                            <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-yellow-100 text-yellow-800">Menunggu Pembayaran</span>
+                                        </td>
+                                        <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
+                                            <button class="text-blue-600 hover:text-blue-900 view-order" data-order="ORD-2107">Detail</button>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">#ORD-2106</td>
+                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">24 Jun 2025</td>
+                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">Global Trading (Malaysia)</td>
+                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">Rp 3.500.000</td>
+                                        <td class="px-6 py-4 whitespace-nowrap">
+                                            <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-purple-100 text-purple-800">Proses Pengemasan</span>
+                                        </td>
+                                        <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
+                                            <button class="text-blue-600 hover:text-blue-900 view-order" data-order="ORD-2106">Detail</button>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">#ORD-2105</td>
+                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">22 Jun 2025</td>
+                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">Euro Import (Jerman)</td>
+                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">Rp 7.800.000</td>
+                                        <td class="px-6 py-4 whitespace-nowrap">
+                                            <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">Terkirim</span>
+                                        </td>
+                                        <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
+                                            <button class="text-blue-600 hover:text-blue-900 view-order" data-order="ORD-2105">Detail</button>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    
+                    <!-- Payment Tab -->
+                    <div id="dashboard-payments" class="dashboard-content hidden bg-white rounded-xl shadow-lg p-6">
+                        <h3 class="text-xl font-bold mb-6">Pembayaran Internasional</h3>
+                        
+                        <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                            <div class="lg:col-span-2">
+                                <div class="bg-white border border-gray-200 rounded-lg shadow p-6 mb-6">
+                                    <h4 class="font-bold mb-4">Riwayat Transaksi</h4>
+                                    <div class="overflow-y-auto max-h-96">
+                                        <div class="border-b border-gray-200 py-4">
+                                            <div class="flex justify-between items-center mb-2">
+                                                <div class="font-medium">Pembayaran #PAY-0725</div>
+                                                <div class="text-green-600 font-bold">+ Rp 4.250.000</div>
+                                            </div>
+                                            <div class="flex justify-between text-sm text-gray-500">
+                                                <div>Tanaka Co. (Jepang)</div>
+                                                <div>25 Jun 2025</div>
+                                            </div>
+                                        </div>
+                                        <div class="border-b border-gray-200 py-4">
+                                            <div class="flex justify-between items-center mb-2">
+                                                <div class="font-medium">Pembayaran #PAY-0625</div>
+                                                <div class="text-green-600 font-bold">+ Rp 3.500.000</div>
+                                            </div>
+                                            <div class="flex justify-between text-sm text-gray-500">
+                                                <div>Global Trading (Malaysia)</div>
+                                                <div>24 Jun 2025</div>
+                                            </div>
+                                        </div>
+                                        <div class="border-b border-gray-200 py-4">
+                                            <div class="flex justify-between items-center mb-2">
+                                                <div class="font-medium">Pembayaran #PAY-0525</div>
+                                                <div class="text-green-600 font-bold">+ Rp 7.800.000</div>
+                                            </div>
+                                            <div class="flex justify-between text-sm text-gray-500">
+                                                <div>Euro Import (Jerman)</div>
+                                                <div>22 Jun 2025</div>
+                                            </div>
+                                        </div>
+                                        <div class="border-b border-gray-200 py-4">
+                                            <div class="flex justify-between items-center mb-2">
+                                                <div class="font-medium">Biaya Platform</div>
+                                                <div class="text-red-600 font-bold">- Rp 350.000</div>
+                                            </div>
+                                            <div class="flex justify-between text-sm text-gray-500">
+                                                <div>Biaya bulanan</div>
+                                                <div>20 Jun 2025</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="lg:col-span-1">
+                                <div class="bg-gradient-to-br from-primary to-blue-700 rounded-xl shadow-lg p-6 text-white">
+                                    <h4 class="font-bold text-xl mb-4">Saldo Ekspor</h4>
+                                    <div class="text-3xl font-bold mb-2">Rp 14.200.000</div>
+                                    <p class="text-blue-100 mb-6">Tersedia untuk penarikan</p>
+                                    
+                                    <div class="bg-white bg-opacity-20 rounded-lg p-4 mb-4">
+                                        <div class="flex justify-between mb-2">
+                                            <span>Pendapatan Bulan Ini</span>
+                                            <span class="font-bold">Rp 11.550.000</span>
+                                        </div>
+                                        <div class="flex justify-between">
+                                            <span>Biaya Platform</span>
+                                            <span class="font-bold">- Rp 350.000</span>
+                                        </div>
+                                    </div>
+                                    
+                                    <button id="withdraw-btn" class="w-full bg-white text-primary py-3 rounded-lg font-bold hover:bg-gray-100">
+                                        Tarik Dana
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Order Detail Modal -->
+    <div id="order-modal" class="hidden fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4">
+        <div class="bg-white rounded-xl shadow-lg w-full max-w-3xl max-h-[90vh] overflow-y-auto">
+            <div class="p-6">
+                <div class="flex justify-between items-start mb-4">
+                    <h3 class="text-xl font-bold">Detail Pesanan <span id="order-id"></span></h3>
+                    <button id="close-modal" class="text-gray-500 hover:text-gray-700">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+                    <div>
+                        <h4 class="font-bold mb-2">Info Pembeli</h4>
+                        <div class="bg-gray-50 p-4 rounded-lg">
+                            <p id="buyer-name" class="font-medium"></p>
+                            <p id="buyer-company" class="text-sm text-gray-600 mb-2"></p>
+                            <p id="buyer-address" class="text-sm"></p>
+                            <p id="buyer-phone" class="text-sm mt-2"></p>
+                            <p id="buyer-email" class="text-sm"></p>
+                        </div>
+                    </div>
+                    
+                    <div>
+                        <h4 class="font-bold mb-2">Info Pengiriman</h4>
+                        <div class="bg-gray-50 p-4 rounded-lg">
+                            <p id="shipping-method" class="font-medium"></p>
+                            <p id="shipping-address" class="text-sm mb-2"></p>
+                            <p class="text-sm"><span class="font-medium">Estimasi:</span> <span id="shipping-estimate"></span></p>
+                            <p class="text-sm"><span class="font-medium">No. Resi:</span> <span id="tracking-number"></span></p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="mb-6">
+                    <h4 class="font-bold mb-2">Produk Dipesan</h4>
+                    <div class="border border-gray-200 rounded-lg">
+                        <table class="min-w-full">
+                            <thead class="bg-gray-50">
+                                <tr>
+                                    <th class="py-3 px-4 text-left text-sm font-medium text-gray-500">Produk</th>
+                                    <th class="py-3 px-4 text-left text-sm font-medium text-gray-500">Harga</th>
+                                    <th class="py-3 px-4 text-left text-sm font-medium text-gray-500">Jumlah</th>
+                                    <th class="py-3 px-4 text-left text-sm font-medium text-gray-500">Subtotal</th>
+                                </tr>
+                            </thead>
+                            <tbody id="order-items">
+                                <!-- Items will be populated here -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div>
+                        <h4 class="font-bold mb-2">Status Pesanan</h4>
+                        <div class="space-y-4">
+                            <div class="flex items-center">
+                                <div class="bg-green-100 p-2 rounded-full mr-3">
+                                    <i class="fas fa-check-circle text-green-600"></i>
+                                </div>
+                                <div>
+                                    <p class="font-medium">Pesanan Diterima</p>
+                                    <p class="text-sm text-gray-500">25 Jun 2025, 10:24 WIB</p>
+                                </div>
+                            </div>
+                            <div class="flex items-center">
+                                <div class="bg-green-100 p-2 rounded-full mr-3">
+                                    <i class="fas fa-check-circle text-green-600"></i>
+                                </div>
+                                <div>
+                                    <p class="font-medium">Pembayaran Diterima</p>
+                                    <p class="text-sm text-gray-500">25 Jun 2025, 11:45 WIB</p>
+                                </div>
+                            </div>
+                            <div class="flex items-center">
+                                <div class="bg-yellow-100 p-2 rounded-full mr-3">
+                                    <i class="fas fa-ellipsis-h text-yellow-600"></i>
+                                </div>
+                                <div>
+                                    <p class="font-medium">Proses Pengemasan</p>
+                                    <p class="text-sm text-gray-500">Sedang diproses</p>
+                                </div>
+                            </div>
+                            <div class="flex items-center">
+                                <div class="bg-gray-100 p-2 rounded-full mr-3">
+                                    <i class="fas fa-ellipsis-h text-gray-400"></i>
+                                </div>
+                                <div>
+                                    <p class="text-gray-400">Pengiriman</p>
+                                    <p class="text-sm text-gray-400">Belum diproses</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div>
+                        <h4 class="font-bold mb-2">Ringkasan Pembayaran</h4>
+                        <div class="bg-gray-50 p-4 rounded-lg">
+                            <div class="flex justify-between mb-2">
+                                <span>Subtotal</span>
+                                <span id="order-subtotal"></span>
+                            </div>
+                            <div class="flex justify-between mb-2">
+                                <span>Biaya Pengiriman</span>
+                                <span id="order-shipping"></span>
+                            </div>
+                            <div class="flex justify-between mb-2">
+                                <span>Asuransi</span>
+                                <span id="order-insurance"></span>
+                            </div>
+                            <div class="flex justify-between mb-2">
+                                <span>Biaya Layanan</span>
+                                <span id="order-fee"></span>
+                            </div>
+                            <div class="border-t border-gray-300 pt-2 mt-2 flex justify-between font-bold">
+                                <span>Total</span>
+                                <span id="order-total"></span>
+                            </div>
+                            <div class="mt-4">
+                                <button id="generate-docs" class="w-full bg-primary text-white py-2 rounded-lg font-medium hover:bg-blue-700">
+                                    Generate Dokumen Ekspor
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Payment Withdrawal Modal -->
+    <div id="withdraw-modal" class="hidden fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4">
+        <div class="bg-white rounded-xl shadow-lg w-full max-w-md">
+            <div class="p-6">
+                <div class="flex justify-between items-start mb-4">
+                    <h3 class="text-xl font-bold">Tarik Dana Ekspor</h3>
+                    <button id="close-withdraw-modal" class="text-gray-500 hover:text-gray-700">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+                
+                <div class="mb-6">
+                    <div class="bg-blue-50 p-4 rounded-lg mb-4">
+                        <p class="font-bold text-lg text-center">Saldo Tersedia: <span class="text-primary">Rp 14.200.000</span></p>
+                    </div>
+                    
+                    <div class="relative mt-4 mb-6">
+                        <input 
+                            type="number" 
+                            id="withdraw-amount" 
+                            class="w-full p-4 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
+                            placeholder=" "
+                        />
+                        <label for="withdraw-amount" class="floating-label absolute left-4 text-gray-500 pointer-events-none">Jumlah Penarikan (Rp)</label>
+                    </div>
+                    
+                    <div class="mb-4">
+                        <label class="block text-sm font-medium mb-2">Metode Penarikan</label>
+                        <div class="grid grid-cols-3 gap-3">
+                            <button class="payment-method border border-gray-300 rounded-lg p-3 hover:border-primary hover:bg-blue-50">
+                                <i class="fas fa-university text-2xl mb-2"></i>
+                                <span>Bank Transfer</span>
+                            </button>
+                            <button class="payment-method border border-gray-300 rounded-lg p-3 hover:border-primary hover:bg-blue-50">
+                                <i class="fab fa-paypal text-2xl mb-2"></i>
+                                <span>PayPal</span>
+                            </button>
+                            <button class="payment-method border border-gray-300 rounded-lg p-3 hover:border-primary hover:bg-blue-50">
+                                <i class="fas fa-wallet text-2xl mb-2"></i>
+                                <span>Dompet Digital</span>
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <div id="bank-details" class="bg-gray-50 p-4 rounded-lg mt-4 hidden">
+                        <div class="relative mb-4">
+                            <input 
+                                type="text" 
+                                class="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
+                                placeholder="Nama Bank"
+                            />
+                        </div>
+                        <div class="relative mb-4">
+                            <input 
+                                type="text" 
+                                class="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
+                                placeholder="Nomor Rekening"
+                            />
+                        </div>
+                        <div class="relative">
+                            <input 
+                                type="text" 
+                                class="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
+                                placeholder="Nama Pemilik Rekening"
+                            />
+                        </div>
+                    </div>
+                </div>
+                
+                <button id="confirm-withdraw" class="w-full bg-primary text-white py-3 rounded-lg font-bold hover:bg-blue-700 flex items-center justify-center">
+                    <span id="withdraw-text">Konfirmasi Penarikan</span>
+                    <i id="withdraw-spinner" class="fas fa-spinner loading-spinner ml-2 hidden"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Payment Success Modal -->
+    <div id="success-modal" class="hidden fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4">
+        <div class="bg-white rounded-xl shadow-lg w-full max-w-md text-center p-8 transaction-success">
+            <div class="text-green-500 text-5xl mb-4">
+                <i class="fas fa-check-circle"></i>
+            </div>
+            <h3 class="text-2xl font-bold mb-2">Penarikan Berhasil!</h3>
+            <p class="text-gray-600 mb-6">Dana sebesar <span id="success-amount" class="font-bold"></span> sedang diproses dan akan masuk ke rekening Anda dalam 1-3 hari kerja.</p>
+            <button id="close-success-modal" class="bg-primary text-white py-3 px-6 rounded-lg font-medium hover:bg-blue-700">
+                Tutup
+            </button>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="bg-dark text-white pt-16 pb-8">
+        <!-- Konten footer seperti sebelumnya -->
+    </footer>
+
+    <script>
+        // Inisialisasi data
+        const orders = {
+            'ORD-2107': {
+                id: 'ORD-2107',
+                date: '25 Jun 2025',
+                buyer: {
+                    name: 'Tanaka Kenji',
+                    company: 'Tanaka Co.',
+                    address: 'Tokyo, Jepang',
+                    phone: '+81 90-1234-5678',
+                    email: 'kenji@tanaka.co.jp'
+                },
+                shipping: {
+                    method: 'Express Shipping (DHL)',
+                    address: 'Tokyo, Jepang',
+                    estimate: '3-5 hari kerja',
+                    tracking: 'DHL123456789JP'
+                },
+                items: [
+                    { name: 'Kerajinan Rotan Anyaman', price: 'Rp 350.000', quantity: 5, subtotal: 'Rp 1.750.000' },
+                    { name: 'Batik Tulis Cap', price: 'Rp 850.000', quantity: 2, subtotal: 'Rp 1.700.000' },
+                    { name: 'Keramik Ukir', price: 'Rp 650.000', quantity: 1, subtotal: 'Rp 650.000' }
+                ],
+                subtotal: 'Rp 4.100.000',
+                shippingCost: 'Rp 100.000',
+                insurance: 'Rp 50.000',
+                fee: 'Rp 0',
+                total: 'Rp 4.250.000'
+            },
+            'ORD-2106': {
+                id: 'ORD-2106',
+                date: '24 Jun 2025',
+                buyer: {
+                    name: 'Ahmad Faisal',
+                    company: 'Global Trading',
+                    address: 'Kuala Lumpur, Malaysia',
+                    phone: '+60 12-3456-789',
+                    email: 'faisal@globaltrading.my'
+                },
+                shipping: {
+                    method: 'Standard Shipping',
+                    address: 'Kuala Lumpur, Malaysia',
+                    estimate: '7-10 hari kerja',
+                    tracking: 'MY456789123'
+                },
+                items: [
+                    { name: 'Kerajinan Rotan Anyaman', price: 'Rp 350.000', quantity: 10, subtotal: 'Rp 3.500.000' }
+                ],
+                subtotal: 'Rp 3.500.000',
+                shippingCost: 'Rp 0',
+                insurance: 'Rp 0',
+                fee: 'Rp 0',
+                total: 'Rp 3.500.000'
+            }
+        };
+
+        // Dashboard Tabs
+        document.querySelectorAll('.dashboard-tab').forEach(tab => {
+            tab.addEventListener('click', () => {
+                // Remove active class from all tabs
+                document.querySelectorAll('.dashboard-tab').forEach(t => {
+                    t.classList.remove('bg-primary', 'text-white');
+                    t.classList.add('hover:bg-gray-100');
+                });
+                
+                // Add active class to clicked tab
+                tab.classList.add('bg-primary', 'text-white');
+                tab.classList.remove('hover:bg-gray-100');
+                
+                // Hide all content
+                document.querySelectorAll('.dashboard-content').forEach(content => {
+                    content.classList.add('hidden');
+                });
+                
+                // Show selected content
+                const tabId = tab.getAttribute('data-tab');
+                document.getElementById(tabId).classList.remove('hidden');
+            });
+        });
+
+        // Order Modal
+        document.querySelectorAll('.view-order').forEach(button => {
+            button.addEventListener('click', () => {
+                const orderId = button.getAttribute('data-order');
+                const order = orders[orderId];
+                
+                if (order) {
+                    document.getElementById('order-id').textContent = `#${order.id}`;
+                    document.getElementById('buyer-name').textContent = order.buyer.name;
+                    document.getElementById('buyer-company').textContent = order.buyer.company;
+                    document.getElementById('buyer-address').textContent = order.buyer.address;
+                    document.getElementById('buyer-phone').textContent = order.buyer.phone;
+                    document.getElementById('buyer-email').textContent = order.buyer.email;
+                    
+                    document.getElementById('shipping-method').textContent = order.shipping.method;
+                    document.getElementById('shipping-address').textContent = order.shipping.address;
+                    document.getElementById('shipping-estimate').textContent = order.shipping.estimate;
+                    document.getElementById('tracking-number').textContent = order.shipping.tracking;
+                    
+                    const itemsContainer = document.getElementById('order-items');
+                    itemsContainer.innerHTML = '';
+                    
+                    order.items.forEach(item => {
+                        const row = document.createElement('tr');
+                        row.innerHTML = `
+                            <td class="py-3 px-4">${item.name}</td>
+                            <td class="py-3 px-4">${item.price}</td>
+                            <td class="py-3 px-4">${item.quantity}</td>
+                            <td class="py-3 px-4 font-medium">${item.subtotal}</td>
+                        `;
+                        itemsContainer.appendChild(row);
+                    });
+                    
+                    document.getElementById('order-subtotal').textContent = order.subtotal;
+                    document.getElementById('order-shipping').textContent = order.shippingCost;
+                    document.getElementById('order-insurance').textContent = order.insurance;
+                    document.getElementById('order-fee').textContent = order.fee;
+                    document.getElementById('order-total').textContent = order.total;
+                    
+                    document.getElementById('order-modal').classList.remove('hidden');
+                }
+            });
+        });
+
+        // Close Modal
+        document.getElementById('close-modal').addEventListener('click', () => {
+            document.getElementById('order-modal').classList.add('hidden');
+        });
+
+        // Generate Documents
+        document.getElementById('generate-docs').addEventListener('click', () => {
+            alert('Dokumen ekspor (invoice, packing list, shipping label) telah berhasil di-generate!');
+        });
+
+        // Payment Method Selection
+        document.querySelectorAll('.payment-method').forEach(method => {
+            method.addEventListener('click', () => {
+                document.querySelectorAll('.payment-method').forEach(m => {
+                    m.classList.remove('border-primary', 'bg-blue-50');
+                });
+                method.classList.add('border-primary', 'bg-blue-50');
+                
+                document.getElementById('bank-details').classList.remove('hidden');
+            });
+        });
+
+        // Withdraw Modal
+        document.getElementById('withdraw-btn').addEventListener('click', () => {
+            document.getElementById('withdraw-modal').classList.remove('hidden');
+        });
+
+        // Close Withdraw Modal
+        document.getElementById('close-withdraw-modal').addEventListener('click', () => {
+            document.getElementById('withdraw-modal').classList.add('hidden');
+        });
+
+        // Confirm Withdraw
+        document.getElementById('confirm-withdraw').addEventListener('click', () => {
+            const amount = document.getElementById('withdraw-amount').value;
+            if (!amount || amount <= 0) {
+                alert('Masukkan jumlah penarikan yang valid');
+                return;
+            }
+            
+            const withdrawText = document.getElementById('withdraw-text');
+            const spinner = document.getElementById('withdraw-spinner');
+            
+            withdrawText.textContent = 'Memproses...';
+            spinner.classList.remove('hidden');
+            
+            // Simulate API call
+            setTimeout(() => {
+                document.getElementById('withdraw-modal').classList.add('hidden');
+                document.getElementById('success-amount').textContent = `Rp ${parseInt(amount).toLocaleString('id-ID')}`;
+                document.getElementById('success-modal').classList.remove('hidden');
+                
+                // Reset
+                withdrawText.textContent = 'Konfirmasi Penarikan';
+                spinner.classList.add('hidden');
+                document.getElementById('withdraw-amount').value = '';
+                document.querySelectorAll('.payment-method').forEach(m => {
+                    m.classList.remove('border-primary', 'bg-blue-50');
+                });
+                document.getElementById('bank-details').classList.add('hidden');
+            }, 2000);
+        });
+
+        // Close Success Modal
+        document.getElementById('close-success-modal').addEventListener('click', () => {
+            document.getElementById('success-modal').classList.add('hidden');
+        });
+
+        // Login/Register Buttons
+        document.getElementById('login-btn').addEventListener('click', () => {
+            alert('Fitur login akan diarahkan ke halaman autentikasi');
+        });
+
+        document.getElementById('register-btn').addEventListener('click', () => {
+            alert('Fitur pendaftaran akan diarahkan ke halaman registrasi');
+        });
+
+        document.getElementById('hero-cta').addEventListener('click', () => {
+            document.getElementById('dashboard').scrollIntoView({ behavior: 'smooth' });
+            document.getElementById('dashboard-overview').classList.remove('hidden');
+            document.querySelector(`.dashboard-tab[data-tab="dashboard-overview"]`).click();
+        });
+
+        // Sales Chart
+        window.addEventListener('load', () => {
+            const ctx = document.getElementById('salesChart').getContext('2d');
+            const salesChart = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: ['Jan', 'Feb', 'Mar', 'Apr', 'Mei', 'Jun'],
+                    datasets: [{
+                        label: 'Nilai Ekspor (juta Rp)',
+                        data: [3.5, 4.2, 5.7, 7.1, 6.3, 8.2],
+                        backgroundColor: 'rgba(37, 99, 235, 0.1)',
+                        borderColor: '#2563EB',
+                        borderWidth: 2,
+                        tension: 0.3,
+                        pointBackgroundColor: '#2563EB',
+                        pointRadius: 4
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            grid: {
+                                color: 'rgba(0, 0, 0, 0.05)'
+                            }
+                        },
+                        x: {
+                            grid: {
+                                display: false
+                            }
+                        }
+                    },
+                    plugins: {
+                        legend: {
+                            display: false
+                        }
+                    }
+                }
+            });
+        });
+    </script>
+</body>
+</html>
